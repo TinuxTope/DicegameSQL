@@ -3,8 +3,7 @@ package cat.itacademy.barcelonactiva.tomas.cristina.s05.t02.n01.s05.t02.n01Tomas
 import lombok.*;
 
 @Data
-@Getter
-@Setter
+@Builder
 @NoArgsConstructor
 @AllArgsConstructor
 public class RegisterPlayerDto {

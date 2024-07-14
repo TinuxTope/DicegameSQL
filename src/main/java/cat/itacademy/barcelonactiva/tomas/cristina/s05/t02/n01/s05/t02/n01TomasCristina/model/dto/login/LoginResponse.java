@@ -3,15 +3,13 @@ package cat.itacademy.barcelonactiva.tomas.cristina.s05.t02.n01.s05.t02.n01Tomas
 import lombok.*;
 import lombok.experimental.Accessors;
 
-@Data
 @Getter
-@Setter
-@NoArgsConstructor
-@AllArgsConstructor
-@Accessors(chain = true)
 public class LoginResponse {
     private String token;
 
-    private long expiresIn;
+    public LoginResponse setToken(String token) {
+        this.token = token;
+        return this;
+    }
 
 }

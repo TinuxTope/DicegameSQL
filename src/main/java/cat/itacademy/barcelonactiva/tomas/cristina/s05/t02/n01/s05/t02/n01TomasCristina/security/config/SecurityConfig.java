@@ -21,20 +21,15 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @EnableMethodSecurity
 public class SecurityConfig {
     private final JwtAuthenticationFilter jwtAuthenticationFilter;
-    //private final UserDetailsService jwtUserDetailsService;
+    private final UserDetailsService jwtUserDetailsService;
     private final AuthenticationProvider authenticationProvider;
 
     public SecurityConfig(JwtAuthenticationFilter jwtAuthenticationFilter, UserDetailsService jwtUserDetailsService, AuthenticationProvider authenticationProvider){
         this.jwtAuthenticationFilter = jwtAuthenticationFilter;
-    //    this.jwtUserDetailsService = jwtUserDetailsService;
+        this.jwtUserDetailsService = jwtUserDetailsService;
         this.authenticationProvider = authenticationProvider;
     }
 
-    /**@Autowired
-    public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
-        auth.userDetailsService(jwtUserDetailsService).passwordEncoder(passwordEncoder());
-    }
-**/
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
@@ -44,8 +39,8 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http.csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(authorize -> authorize
-                        .requestMatchers("/players/**").permitAll()
-                        .requestMatchers("/players/logout").permitAll()
+                        .requestMatchers("/auth/signup").permitAll()
+                        .requestMatchers("/auth/login").permitAll()
                         .anyRequest().authenticated()
                 )
                 .sessionManagement(session -> session
@@ -57,8 +52,4 @@ public class SecurityConfig {
         return http.build();
     }
 
-    /**@Bean
-    public AuthenticationManager authenticationManager(HttpSecurity http) throws Exception {
-        return http.getSharedObject(AuthenticationManagerBuilder.class).build();
-    }**/
 }
