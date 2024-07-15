@@ -2,12 +2,12 @@ package cat.itacademy.barcelonactiva.tomas.cristina.s05.t02.n01.s05.t02.n01Tomas
 
 
 import cat.itacademy.barcelonactiva.tomas.cristina.s05.t02.n01.s05.t02.n01TomasCristina.model.domain.PlayerEntity;
+import cat.itacademy.barcelonactiva.tomas.cristina.s05.t02.n01.s05.t02.n01TomasCristina.model.dto.JwtAuthenticationResponse;
 import cat.itacademy.barcelonactiva.tomas.cristina.s05.t02.n01.s05.t02.n01TomasCristina.model.dto.login.LoginPlayerDto;
 import cat.itacademy.barcelonactiva.tomas.cristina.s05.t02.n01.s05.t02.n01TomasCristina.model.dto.login.LoginResponse;
 import cat.itacademy.barcelonactiva.tomas.cristina.s05.t02.n01.s05.t02.n01TomasCristina.model.dto.login.RegisterPlayerDto;
 import cat.itacademy.barcelonactiva.tomas.cristina.s05.t02.n01.s05.t02.n01TomasCristina.model.service.impl.AuthenticationService;
 import cat.itacademy.barcelonactiva.tomas.cristina.s05.t02.n01.s05.t02.n01TomasCristina.security.JwtService;
-import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -26,9 +26,9 @@ public class AuthController {
     }
 
     @PostMapping("/signup")
-    public ResponseEntity<PlayerEntity> register(@RequestBody RegisterPlayerDto registerPlayerDto) {
-        PlayerEntity registeredUser = authenticationService.signup(registerPlayerDto);
-        return ResponseEntity.ok(registeredUser);
+    public ResponseEntity<JwtAuthenticationResponse> register(@RequestBody RegisterPlayerDto registerPlayerDto) {
+        return ResponseEntity.ok(authenticationService.signup(registerPlayerDto));
+
     }
 
     @PostMapping("/login")

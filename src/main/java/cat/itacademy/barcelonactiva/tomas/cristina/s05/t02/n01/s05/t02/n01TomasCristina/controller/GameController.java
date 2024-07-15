@@ -22,7 +22,7 @@ public class GameController {
         return ResponseEntity.ok(games);
     }
 
-    @DeleteMapping("/{playerId}")
+    @DeleteMapping("/{playerId}/delete")
     public ResponseEntity<Void> deletePlayerGames(@PathVariable int playerId) {
         gameService.deletePlayerGames(playerId);
         return ResponseEntity.noContent().build();

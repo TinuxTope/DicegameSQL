@@ -36,7 +36,7 @@ public class PlayerController {
         return ResponseEntity.ok(gameResult);
     }
 
-    @DeleteMapping("/{id}/games")
+    @DeleteMapping("/{id}/games/delete")
     public ResponseEntity<Void> deletePlayerGames(@PathVariable int id) {
         playerService.deletePlayerGames(id);
         return ResponseEntity.noContent().build();
