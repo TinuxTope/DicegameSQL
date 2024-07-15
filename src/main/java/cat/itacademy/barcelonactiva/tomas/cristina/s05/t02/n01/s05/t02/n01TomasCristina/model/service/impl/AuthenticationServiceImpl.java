@@ -6,6 +6,7 @@ import cat.itacademy.barcelonactiva.tomas.cristina.s05.t02.n01.s05.t02.n01TomasC
 import cat.itacademy.barcelonactiva.tomas.cristina.s05.t02.n01.s05.t02.n01TomasCristina.model.dto.login.LoginPlayerDto;
 import cat.itacademy.barcelonactiva.tomas.cristina.s05.t02.n01.s05.t02.n01TomasCristina.model.dto.login.RegisterPlayerDto;
 import cat.itacademy.barcelonactiva.tomas.cristina.s05.t02.n01.s05.t02.n01TomasCristina.model.repository.PlayerRepository;
+import cat.itacademy.barcelonactiva.tomas.cristina.s05.t02.n01.s05.t02.n01TomasCristina.model.service.AuthenticationService;
 import cat.itacademy.barcelonactiva.tomas.cristina.s05.t02.n01.s05.t02.n01TomasCristina.security.JwtService;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -13,7 +14,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Service
-public class AuthenticationService {
+public class AuthenticationServiceImpl implements AuthenticationService {
 
     private final PlayerRepository playerRepository;
     private final PasswordEncoder passwordEncoder;
@@ -21,7 +22,7 @@ public class AuthenticationService {
     private final JwtService jwtService;
 
 
-    public AuthenticationService(
+    public AuthenticationServiceImpl(
             PlayerRepository playerRepository,
             AuthenticationManager authenticationManager,
             PasswordEncoder passwordEncoder, JwtService jwtService){
