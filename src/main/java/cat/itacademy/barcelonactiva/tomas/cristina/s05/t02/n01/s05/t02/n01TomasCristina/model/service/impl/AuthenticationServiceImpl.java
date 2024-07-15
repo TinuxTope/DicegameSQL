@@ -1,6 +1,7 @@
 package cat.itacademy.barcelonactiva.tomas.cristina.s05.t02.n01.s05.t02.n01TomasCristina.model.service.impl;
 
 
+import cat.itacademy.barcelonactiva.tomas.cristina.s05.t02.n01.s05.t02.n01TomasCristina.exceptions.PlayerAlreadyExistsException;
 import cat.itacademy.barcelonactiva.tomas.cristina.s05.t02.n01.s05.t02.n01TomasCristina.model.domain.PlayerEntity;
 import cat.itacademy.barcelonactiva.tomas.cristina.s05.t02.n01.s05.t02.n01TomasCristina.model.dto.JwtAuthenticationResponse;
 import cat.itacademy.barcelonactiva.tomas.cristina.s05.t02.n01.s05.t02.n01TomasCristina.model.dto.login.LoginPlayerDto;
@@ -33,6 +34,9 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     }
 
     public JwtAuthenticationResponse signup(RegisterPlayerDto input){
+        if (playerRepository.findByEmail(input.getEmail()).isPresent()) {
+            throw new PlayerAlreadyExistsException("Player already exists with email: " + input.getEmail());
+        }
         PlayerEntity player = PlayerEntity.builder()
                 .name(input.getName())
                 .email(input.getEmail())
@@ -53,6 +57,6 @@ public class AuthenticationServiceImpl implements AuthenticationService {
                 )
         );
         return playerRepository.findByEmail(input.getEmail())
-                .orElseThrow(() -> new RuntimeException("User not found"));
+                .orElseThrow(() -> new RuntimeException("User not found with email: " + input.getEmail()));
     }
 }

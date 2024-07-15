@@ -1,5 +1,6 @@
 package cat.itacademy.barcelonactiva.tomas.cristina.s05.t02.n01.s05.t02.n01TomasCristina.model.service.impl;
 
+import cat.itacademy.barcelonactiva.tomas.cristina.s05.t02.n01.s05.t02.n01TomasCristina.exceptions.PlayerNotFoundException;
 import cat.itacademy.barcelonactiva.tomas.cristina.s05.t02.n01.s05.t02.n01TomasCristina.model.domain.GameEntity;
 import cat.itacademy.barcelonactiva.tomas.cristina.s05.t02.n01.s05.t02.n01TomasCristina.model.domain.PlayerEntity;
 import cat.itacademy.barcelonactiva.tomas.cristina.s05.t02.n01.s05.t02.n01TomasCristina.model.dto.GameDto;
@@ -45,31 +46,30 @@ public class Impl {
 
     public GameDto rollDice(int playerId) {
         Optional<PlayerEntity> optionalPlayer = playerRepository.findById(playerId);
-        if (optionalPlayer.isPresent()) {
-            PlayerEntity player = optionalPlayer.get();
-            Random random = new Random();
-            int dice1 = random.nextInt(6) + 1;
-            int dice2 = random.nextInt(6) + 1;
-            boolean won = (dice1 + dice2) == 7;
-
-            GameEntity game = GameEntity.builder()
-                    .player(player)
-                    .dice1(dice1)
-                    .dice2(dice2)
-                    .won(won)
-                    .build();
-            gameRepository.save(game);
-
-            player.setTotalRolls(player.getTotalRolls() + 1);
-            if (won) {
-                player.setWonRolls(player.getWonRolls() + 1);
-            }
-            playerRepository.save(player);
-
-            return toGameDto(game);
-        } else {
-            throw new RuntimeException("Player not found");
+        if (!optionalPlayer.isPresent()) {
+            throw new PlayerNotFoundException("Player not found");
         }
+        PlayerEntity player = optionalPlayer.get();
+        Random random = new Random();
+        int dice1 = random.nextInt(6) + 1;
+        int dice2 = random.nextInt(6) + 1;
+        boolean won = (dice1 + dice2) == 7;
+
+        GameEntity game = GameEntity.builder()
+                .player(player)
+                .dice1(dice1)
+                .dice2(dice2)
+                .won(won)
+                .build();
+        gameRepository.save(game);
+
+        player.setTotalRolls(player.getTotalRolls() + 1);
+        if (won) {
+            player.setWonRolls(player.getWonRolls() + 1);
+        }
+        playerRepository.save(player);
+
+        return toGameDto(game);
     }
 
     public void deletePlayerGames(int playerId) {
@@ -92,13 +92,13 @@ public class Impl {
 
     public List<GameDto> getPlayerGames(int playerId) {
         Optional<PlayerEntity> optionalPlayer = playerRepository.findById(playerId);
-        if (optionalPlayer.isPresent()) {
-            PlayerEntity player = optionalPlayer.get();
-            List<GameEntity> games = gameRepository.findByPlayer(player);
-            return games.stream().map(this::toGameDto).collect(Collectors.toList());
-        } else {
-            throw new RuntimeException("Player not found");
+        if (!optionalPlayer.isPresent()) {
+            throw new PlayerNotFoundException("Player not found");
+
         }
+        PlayerEntity player = optionalPlayer.get();
+        List<GameEntity> games = gameRepository.findByPlayer(player);
+        return games.stream().map(this::toGameDto).collect(Collectors.toList());
     }
 
     public double getAverageRanking() {
